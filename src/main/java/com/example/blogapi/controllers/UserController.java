@@ -2,6 +2,7 @@ package com.example.blogapi.controllers;
 
 import com.example.blogapi.payloads.UserDTO;
 import com.example.blogapi.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,11 +24,11 @@ public class UserController {
         return ResponseEntity.ok(this.userService.getUserById(id));
     }
     @PostMapping("/save")
-    public ResponseEntity<UserDTO> saveUser(@RequestBody UserDTO userDTO){
+    public ResponseEntity<UserDTO> saveUser(@Valid @RequestBody UserDTO userDTO){
         return ResponseEntity.status(HttpStatus.CREATED).body(this.userService.createUser(userDTO));
     }
     @PutMapping("/update")
-    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO){
+    public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UserDTO userDTO){
         return ResponseEntity.status(HttpStatus.OK).body(this.userService.updateUser(userDTO));
     }
     @DeleteMapping("/delete/{id}")
