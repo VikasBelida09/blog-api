@@ -3,13 +3,15 @@ package com.example.blogapi.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="category")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Category {
@@ -20,4 +22,7 @@ public class Category {
     private String categoryTitle;
     @Column(name="description",nullable = false)
     private String categoryDescription;
+
+    @OneToMany(mappedBy = "category",cascade = CascadeType.ALL,fetch=FetchType.LAZY)
+    private List<Post> posts=new ArrayList<>();
 }
