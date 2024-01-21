@@ -20,6 +20,13 @@ public class GlobalExceptionHandler {
       response.setStatus(false);
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
+    @ExceptionHandler(PostNotFoundException.class)
+    public ResponseEntity<ApiResponse> handlePostNotFoundException(PostNotFoundException ex){
+        ApiResponse response=new ApiResponse();
+        response.setMessage(ex.getMessage());
+        response.setStatus(false);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
     @ExceptionHandler(CategoryNotFoundException.class)
     public ResponseEntity<ApiResponse> handleCategoryNotFoundException(CategoryNotFoundException ex){
         ApiResponse response=new ApiResponse();
