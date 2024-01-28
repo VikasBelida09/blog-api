@@ -3,13 +3,16 @@ package com.example.blogapi.services.impl;
 import com.example.blogapi.entities.User;
 import com.example.blogapi.exceptions.UserNotFoundException;
 import com.example.blogapi.payloads.UserDTO;
+import com.example.blogapi.repositories.RoleRepository;
 import com.example.blogapi.repositories.UserRepository;
 import com.example.blogapi.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,8 +23,16 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private RoleServiceImpl roleService;
+
     @Override
     public UserDTO createUser(UserDTO userDTO) {
+        userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        userDTO.setRoles(userDTO.getRoles().stream().map(r->roleService.findById(r.getId())).collect(Collectors.toList()));
         User user=this.userRepository.save(this.dtoToUser(userDTO));
         return this.userToDTO(user);
     }
@@ -35,6 +46,11 @@ public class UserServiceImpl implements UserService {
     public UserDTO getUserById(Long id) {
         User user=this.userRepository.findById(id).orElseThrow(()->new UserNotFoundException(id));
         return this.userToDTO(user);
+    }
+
+    @Override
+    public User findByUserName(String userName) {
+       return this.userRepository.findByName(userName).orElse(null);
     }
 
     @Override

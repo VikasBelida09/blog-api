@@ -1,8 +1,10 @@
 package com.example.blogapi.exceptions;
 
+import com.example.blogapi.entities.Role;
 import com.example.blogapi.payloads.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -19,6 +21,20 @@ public class GlobalExceptionHandler {
       response.setMessage(ex.getMessage());
       response.setStatus(false);
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ApiResponse> handleAuthException(AuthenticationException ex){
+        ApiResponse response=new ApiResponse();
+        response.setMessage(ex.getMessage());
+        response.setStatus(false);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+    }
+    @ExceptionHandler(RoleNotFoundException.class)
+    public ResponseEntity<ApiResponse> handleRoleNotFoundException(RoleNotFoundException ex){
+        ApiResponse response=new ApiResponse();
+        response.setMessage(ex.getMessage());
+        response.setStatus(false);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
     @ExceptionHandler(PostNotFoundException.class)
     public ResponseEntity<ApiResponse> handlePostNotFoundException(PostNotFoundException ex){
