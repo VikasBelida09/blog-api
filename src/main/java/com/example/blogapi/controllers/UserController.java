@@ -1,5 +1,6 @@
 package com.example.blogapi.controllers;
 
+import com.example.blogapi.entities.Role;
 import com.example.blogapi.jwt.JwtHelper;
 import com.example.blogapi.jwt.JwtRequest;
 import com.example.blogapi.jwt.JwtResponse;
@@ -69,4 +70,8 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(this.userService.deleteUser(id));
     }
 
+    @GetMapping("/roles")
+    public ResponseEntity<List<Role>> getRoles(){
+        return ResponseEntity.status(HttpStatus.OK).body(this.userService.getRoles());
+    }
 }

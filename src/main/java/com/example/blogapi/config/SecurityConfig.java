@@ -19,6 +19,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
+import org.springframework.web.cors.CorsConfiguration;
+
+import java.util.List;
 
 @Component
 public class SecurityConfig {
@@ -39,6 +42,14 @@ public class SecurityConfig {
     @Bean
     private SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
+                .cors().configurationSource(request -> {
+                    CorsConfiguration config = new CorsConfiguration();
+                    config.setAllowedOrigins(List.of("*")); // Allow all origins
+                    config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Allow common methods
+                    config.setAllowedHeaders(List.of("*")); // Allow all headers
+                    config.setAllowCredentials(true); // Allow credentials
+                    return config;
+                }).and()
                 .csrf()
                 .disable()
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
@@ -51,7 +62,7 @@ public class SecurityConfig {
     }
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/api/user/sign-up", "/api/user/login");
+        return (web) -> web.ignoring().requestMatchers("/api/user/sign-up", "/api/user/login","/graphiql","/api/book/**","/graphql", "/api/user/roles");
     }
     @Bean
     public AuthenticationProvider authenticationProvider() {

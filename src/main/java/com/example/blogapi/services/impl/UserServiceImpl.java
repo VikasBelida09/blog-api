@@ -1,5 +1,6 @@
 package com.example.blogapi.services.impl;
 
+import com.example.blogapi.entities.Role;
 import com.example.blogapi.entities.User;
 import com.example.blogapi.exceptions.UserNotFoundException;
 import com.example.blogapi.payloads.UserDTO;
@@ -70,6 +71,12 @@ public class UserServiceImpl implements UserService {
         this.userRepository.deleteById(user.getId());
         return true;
     }
+
+    @Override
+    public List<Role> getRoles() {
+        return roleService.getRoles();
+    }
+
     private User dtoToUser(UserDTO userDTO){
         return this.modelMapper.map(userDTO,User.class);
     }

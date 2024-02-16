@@ -1,5 +1,6 @@
 package com.example.blogapi.services;
 
+import com.example.blogapi.entities.Role;
 import com.example.blogapi.entities.User;
 import com.example.blogapi.payloads.UserDTO;
 
@@ -15,4 +16,6 @@ public interface UserService {
     UserDTO updateUser(UserDTO user);
 
     boolean deleteUser(Long id);
+
+    List<Role> getRoles();
 }

@@ -1,0 +1,38 @@
+type Book {
+  id: ID!
+  name: String!
+  author: String!
+  price: Float!
+  pages: Int!
+  type: String!
+  publishedDate: String
+  rating: Float
+  about: String
+  summary: String
+  isBookAvailableOnline: Boolean!
+  isInStock: Boolean!
+}
+input BookRequest {
+  id:ID,
+  name: String!
+  author: String!
+  price: Float
+  pages: Int
+  type: String
+  publishedDate: String
+  rating: Float
+  about: String
+  summary: String
+  isBookAvailableOnline: Boolean
+  isInStock: Boolean
+}
+
+
+type Query {
+  getAllBooks: [Book!]!
+  getById(bookId:ID!) : Book!
+}
+type Mutation {
+  saveBook(book:BookRequest!): Book!
+
+}
